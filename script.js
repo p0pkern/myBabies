@@ -10,75 +10,233 @@ function drawBackground() {
     ctx.closePath();
 }
 
+
+class Score {
+    constructor() {
+        this.score = 0;
+    }
+
+    getScore() {
+        return this.score;
+    }
+
+    adjustScore(points, mult) {
+        this.score += (points * mult);
+    }
+
+    update(points, mult) {
+        this.adjustScore(points, mult);
+    }
+}
+
+class Hazard {
+    constructor(dx, dy) {
+        this.x = dx;
+        this.y = dy;
+        this.active = false;
+    }
+
+    activate() {
+        this.active = true;
+    }
+
+    deactivate() {
+        this.activate = false;
+    }
+}
+
+class Fire extends Hazard {
+    constructor(dx, dy) {
+        super(dx, dy);
+        this.width = 30;
+        this.height = 30;
+        this.cycle = true;
+    }
+
+    drawFire() {
+        if (this.cycle === true) {
+            ctx.save();
+
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 50, 0, 2* Math.PI);
+            ctx.fillStyle = 'orangered';
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.restore();
+        }
+    }
+
+    update() {
+        this.drawFire();
+    }
+}
+
 class Baby {
     constructor(dx, dy) {
         this.x = dx;
         this.y = dy;
         this.nextX = null;
         this.nextY = null;
+        this.direction = 'left'
     }
 
     drawBaby() {
-        ctx.save();
+        if (this.direction === 'down') {
+            ctx.save();
 
-        // Tail
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.rect(this.x + 2, this.y -5, 10, 10);
-        ctx.fill();
-        ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x + 2, this.y -5, 10, 10);
+            ctx.fill();
+            ctx.closePath();
 
-        //Nose
-        ctx.beginPath();
-        ctx.fillStyle = "black";
-        ctx.rect(this.x + 5, this.y + 12, 5, 5);
-        ctx.fill();
-        ctx.closePath();
+            //Nose
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x + 5, this.y + 12, 5, 5);
+            ctx.fill();
+            ctx.closePath();
 
-        // Body
-        ctx.beginPath();
-        ctx.fillStyle = "brown";
-        ctx.rect(this.x, this.y, 15, 15);
-        ctx.fill();
-        ctx.closePath();
+            // Body
+            ctx.beginPath();
+            ctx.fillStyle = "brown";
+            ctx.rect(this.x, this.y, 15, 15);
+            ctx.fill();
+            ctx.closePath();
 
-        ctx.restore()
+            ctx.restore();
+
+        } else if (this.direction === 'up') {
+
+            ctx.save();
+
+            // Tail
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x + 2, this.y + 12, 10, 10);
+            ctx.fill();
+            ctx.closePath();
+
+            //Nose
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x + 5, this.y - 4, 5, 5);
+            ctx.fill();
+            ctx.closePath();
+
+            // Body
+            ctx.beginPath();
+            ctx.fillStyle = "brown";
+            ctx.rect(this.x, this.y, 15, 15);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.restore();
+
+        } else if (this.direction === 'right') {
+            ctx.save();
+
+            // Tail
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x -5, this.y +2, 10, 10);
+            ctx.fill();
+            ctx.closePath();
+
+            //Nose
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x + 13, this.y + 5, 5, 5);
+            ctx.fill();
+            ctx.closePath();
+
+            // Body
+            ctx.beginPath();
+            ctx.fillStyle = "brown";
+            ctx.rect(this.x, this.y, 15, 15);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.restore();
+
+        } else if (this.direction === 'left') {
+            ctx.save();
+
+            // Tail
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x +10, this.y + 2, 10, 10);
+            ctx.fill();
+            ctx.closePath();
+
+            //Nose
+            ctx.beginPath();
+            ctx.fillStyle = "black";
+            ctx.rect(this.x -3, this.y + 5, 5, 5);
+            ctx.fill();
+            ctx.closePath();
+
+            // Body
+            ctx.beginPath();
+            ctx.fillStyle = "brown";
+            ctx.rect(this.x, this.y, 15, 15);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.restore();
+        }
     }
 
     wander() {
-        console.log(this.x, this.y, this.nextX, this.nextY);
 
         if (this.nextX === null && this.nextY === null) {
             this.nextX = Math.floor(Math.random() * canvas.width - 15);
             this.nextY = Math.floor(Math.random() * canvas.height - 15);
+
+
         } else if (this.nextX != this.x && this.nextY != this.y) {
             if (this.nextX < this.x) {
                 this.x -= .5;
+                this.direction = 'left';
             } else if (this.nextX > this.x) {
                 this.x += .5;
+                this.direction = 'right';
             }
-            if (this.nextY < this.y) {
+            else if (this.nextY > this.y) {
                 this.y -= .5;
+                this.direction = 'up';
             } else if (this. nextY < this.y) {
                 this.y += .5;
+                this.direction = 'down';
             }
         } else if (this.nextX === this.x && this.nextY === this.y) {
             this.nextX = null;
             this.nextY = null;
-        } else if (this.nextX == this.x) {
+        } else if (this.nextX == this.x && this.nextY != this.y) {
             if (this.nextY < this.y) {
                 this.y -= .5;
+                this.direction = 'up';
             } else if (this.nextY > this.y) {
                 this.y += .5;
+                this.direction = 'down'; 
             }
-        } else if (this.nextY == this.y) {
+        } else if (this.nextY == this.y && this.nextX != this.x) {
             if (this.nextX < this.x) {
                 this.x -= .5;
+                this.direction = 'right';
             } else if (this.nextX > this.x) {
                 this.x += .5;
+                this.direction = 'left';
             }
         }
         
+    }
+
+    interrupt() {
+        this.nextX = null;
+        this.nextY = null;
     }
 
     update() {
@@ -281,19 +439,29 @@ function keyUpHandler(e) {
 
 let setBeaverRotation = drawBeaverLeft;
 
-let babyOne = new Baby(canvas.width/2, canvas.height/2);
-let babyTwo = new Baby(canvas.width/2 -30, canvas.height/2 + 30);
-let babyThree = new Baby(canvas.width/2 - 30, canvas.height/2 - 30);
-let babyFour = new Baby(canvas.width/2 + 30, canvas.height/2 + 30);
-let babyFive = new Baby(canvas.width/2+ 60, canvas.height/2 - 60);
-let babySix = new Baby(canvas.width/2, canvas.height/2);
-let babySeven = new Baby(canvas.width/2 -30, canvas.height/2 + 30);
-let babyEight = new Baby(canvas.width/2 - 30, canvas.height/2 - 30);
-let babyNine = new Baby(canvas.width/2 + 30, canvas.height/2 + 30);
-let babyTen = new Baby(canvas.width/2+ 60, canvas.height/2 - 60);
+let babyOne = new Baby(canvas.width - 10, 50);
+let babyTwo = new Baby(canvas.width - 10, 50);
+let babyThree = new Baby(canvas.width - 10, 50);
+let babyFour = new Baby(canvas.width - 10, 50);
+let babyFive = new Baby(canvas.width - 10, 50);
+let babySix = new Baby(canvas.width - 10, 50);
+let babySeven = new Baby(canvas.width - 10, 50);
+let babyEight = new Baby(canvas.width - 10, 50);
+let babyNine = new Baby(canvas.width - 10, 50);
+let babyTen = new Baby(canvas.width - 10, 50);
 
 let babies = [babyOne, babyTwo, babyThree, babyFour, babyFive, babySix, babySeven, babyEight, babyNine, babyTen];
+let fires = []
+let fire = new Fire(50, canvas.height - 50)
 
+let fireInterval = setInterval(() => {
+    let newFire = new Fire(Math.floor(Math.random() * (canvas.width - 50)), Math.floor(Math.random() * (canvas.height - 50)));
+    fires.push(newFire);
+}, 10000);
+
+fires.push(fire);
+
+let score = new Score();
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -301,25 +469,32 @@ function draw() {
     drawBackground();
     drawRiver();
     drawNest();
+    for (let j = 0; j < fires.length; j++) {
+        fires[j].update();
+    }
+    
+    
     setBeaverRotation();
     for (let j = 0; j < babies.length; j++) {
         babies[j].update()
     }
 
     if (rightPressed) {
-        beaverX += 1;
+        beaverX += 2;
         setBeaverRotation = drawBeaverRight;
         if (beaverX + beaverWidth > canvas.width) {
             beaverX = canvas.width - beaverWidth;
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverX + 10 >= babies[i].x && (beaverY <= babies[i].y + 10 && beaverY >= babies[i].y  - 10 && beaverX <= babies[i].x + 10 && beaverX >= babies[i].x  - 10)) {
+            if (beaverX + 20 >= babies[i].x && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+                babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].x + 10 >= babies[j].x && (babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10))) {
+                        babies[j].interrupt();
                         babies[i].x += 1;
-                        babies[j].x = babies[i].x + 40;
+                        babies[j].x = babies[i].x + 2;
                     } else {
-                        babies[i].x += 2;
+                        babies[i].x += 1;
                     }
                 }
             }
@@ -327,18 +502,20 @@ function draw() {
     }
     else if (leftPressed) {
         setBeaverRotation = drawBeaverLeft;
-        beaverX -= 1;
+        beaverX -= 2;
         if (beaverX < 0) {
             beaverX = 0;
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverX - 10 <= babies[i].x && (beaverY <= babies[i].y + 10 && beaverY >= babies[i].y  - 10 && beaverX <= babies[i].x + 10 && beaverX >= babies[i].x  - 10)) {
+            if (beaverX - 20 <= babies[i].x && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+                babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].x - 10 <= babies[j].x && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
+                        babies[j].interrupt();
                         babies[i].x -= 1;
-                        babies[j].x = babies[i].x - 40;
+                        babies[j].x = babies[i].x - 2;
                     } else {
-                        babies[i].x -= 2;
+                        babies[i].x -= 1;
                     }
                 }
             }
@@ -346,18 +523,20 @@ function draw() {
 
     } else if (upPressed) {
         setBeaverRotation = drawBeaverUp;
-        beaverY -= 1;
+        beaverY -= 2;
         if (beaverY < 0) {
             beaverY = 0;
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverY - 10 <= babies[i].y && (beaverY <= babies[i].y + 10 && beaverY >= babies[i].y  - 10 && beaverX <= babies[i].x + 10 && beaverX >= babies[i].x  - 10)) {
+            if (beaverY - 20 <= babies[i].y && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+                babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].y - 10 <= babies[j].y && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
+                        babies[j].interrupt();
                         babies[i].y -= 1;
-                        babies[j].y = babies[i].y - 40;
+                        babies[j].y = babies[i].y - 2;
                     } else {
-                        babies[i].y -= 2;
+                        babies[i].y -= 1;
                     }
                 }
             }
@@ -365,18 +544,20 @@ function draw() {
         
     } else if (downPressed) {
         setBeaverRotation = drawBeaverDown;
-        beaverY += 1;
+        beaverY += 2;
         if (beaverY > canvas.height - beaverHeight) {
             beaverY = canvas.height - beaverHeight;
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverY + 10 >= babies[i].y && (beaverY <= babies[i].y + 10 && beaverY >= babies[i].y  - 10 && beaverX <= babies[i].x + 10 && beaverX >= babies[i].x  - 10)) {
+            if (beaverY + 20 >= babies[i].y && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+                babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
+                    babies[j].interrupt();
                     if (babies[i] != babies[j] && (babies[i].x + 10 >= babies[j].x && (babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
                         babies[i].y += 1;
-                        babies[j].y = babies[i].x + 40;
+                        babies[j].y = babies[i].x + 2;
                     } else {
-                        babies[i].y += 2;
+                        babies[i].y += 1;
                     }
                 }
             }
@@ -384,11 +565,31 @@ function draw() {
     }
 
     for (let k = 0; k < babies.length; k++) {
-        babies[k].wander();
+        for(f = 0; f < fires.length; f++) {
+            if (babies[k].x <= fires[f].x + 50 && babies[k].x >= fires[f].x - 50 && babies[k].y <= fires[f].y + 50 && babies[k].y >= fires[f].y - 50) {
+                babies = babies.filter(item => item !== babies[k])
+                break;
+            } else {
+                babies[k].wander();
+            }
+        }
     }
 }
+
+
+let scoreInterval = setInterval(() => {
+    score.update(100, babies.length)
+    document.getElementById("score").innerText = score.getScore();
+    if (babies.length == 0) {
+        if(!alert(`Game over! you scored ${score.getScore()}`)) {
+            window.location.reload();
+            clearInterval(scoreInterval);
+            clearInterval(fireInterval);
+        }
+    } 
+}, 1000)
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-let interval = setInterval(draw, 5);
+let interval = setInterval(draw, 10);
