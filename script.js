@@ -293,125 +293,157 @@ function drawNest() {
 
 }
 
+class Beaver {
+    constructor() {
+        this.beaverHeight = 20;
+        this.beaverWidth = 20;
+        this.beaverX = (canvas.width/2-this.beaverWidth);
+        this.beaverY = (canvas.height/2-this.beaverHeight);
+        this.direction = 'left'
+    }
+
+    drawBeaver() {
+        if (this.direction === 'up') {
+            // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY+20, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY-10, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX+7, this.beaverY-12, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        } else if (this.direction === 'right') {
+            // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX-13, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX+18, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX+30, this.beaverY+7, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        } else if (this.direction === 'down') {
+             // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY-15, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY+15, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX+7, this.beaverY+28, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        } else if (this.direction === 'left') {
+            // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX+20, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX-10, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX-13, this.beaverY+8, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        }
+    } 
+
+    setBeaverRoatation( rotation ) {
+        this.direction = rotation;
+    }
+
+    update() {
+        this.drawBeaver();
+    }
+
+    setX( value ) {
+        this.beaverX += value;
+    }
+
+    setY( value ) {
+        this.beaverY += value;
+    }
+
+    getX( value ) {
+        return this.beaverX;
+    }
+
+    getY( value) {
+        return this.beaverY;
+    }
+
+    getWidth() {
+        return this.beaverWidth;
+    }
+
+    getHeight() {
+        return this.beaverHeight;
+    }
+}
+
 // Beaver Settings/Movements
 let rightPressed = false;
 let leftPressed = false;
 let upPressed = false;
 let downPressed = false;
-
-let beaverHeight = 20;
-let beaverWidth = 20;
-let beaverX = (canvas.width/2-beaverWidth);
-let beaverY = (canvas.height/2-beaverHeight);
-
-function drawBeaverUp() {
-    // Body
-    ctx.beginPath();
-    ctx.rect(beaverX, beaverY, beaverWidth, beaverHeight);
-    ctx.fillStyle = "brown";
-    ctx.fill();
-    ctx.closePath();
-    // Tail
-    ctx.beginPath();
-    ctx.rect(beaverX+3, beaverY+20, beaverWidth-6, beaverHeight-5);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-    // Head
-    ctx.beginPath();
-    ctx.rect(beaverX+3, beaverY-10, beaverWidth-6, beaverHeight-5);
-    ctx.fillStyle = "brown";
-    ctx.fill();
-    ctx.closePath();
-    // Nose
-    ctx.beginPath();
-    ctx.rect(beaverX+7, beaverY-12, beaverWidth-15, beaverHeight-15);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-}
-
-function drawBeaverRight() {
-    // Body
-    ctx.beginPath();
-    ctx.rect(beaverX, beaverY, beaverWidth, beaverHeight);
-    ctx.fillStyle = "brown";
-    ctx.fill();
-    ctx.closePath();
-    // Tail
-    ctx.beginPath();
-    ctx.rect(beaverX-13, beaverY+3, beaverWidth-6, beaverHeight-5);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-    // Head
-    ctx.beginPath();
-    ctx.rect(beaverX+18, beaverY+3, beaverWidth-6, beaverHeight-5);
-    ctx.fillStyle = "brown";
-    ctx.fill();
-    ctx.closePath();
-    // Nose
-    ctx.beginPath();
-    ctx.rect(beaverX+30, beaverY+7, beaverWidth-15, beaverHeight-15);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-}
-
-function drawBeaverDown() {
-   // Body
-   ctx.beginPath();
-   ctx.rect(beaverX, beaverY, beaverWidth, beaverHeight);
-   ctx.fillStyle = "brown";
-   ctx.fill();
-   ctx.closePath();
-   // Tail
-   ctx.beginPath();
-   ctx.rect(beaverX+3, beaverY-15, beaverWidth-6, beaverHeight-5);
-   ctx.fillStyle = "black";
-   ctx.fill();
-   ctx.closePath();
-   // Head
-   ctx.beginPath();
-   ctx.rect(beaverX+3, beaverY+15, beaverWidth-6, beaverHeight-5);
-   ctx.fillStyle = "brown";
-   ctx.fill();
-   ctx.closePath();
-   // Nose
-   ctx.beginPath();
-   ctx.rect(beaverX+7, beaverY+28, beaverWidth-15, beaverHeight-15);
-   ctx.fillStyle = "black";
-   ctx.fill();
-   ctx.closePath();
-}
-
-function drawBeaverLeft() {
-    // Body
-    ctx.beginPath();
-    ctx.rect(beaverX, beaverY, beaverWidth, beaverHeight);
-    ctx.fillStyle = "brown";
-    ctx.fill();
-    ctx.closePath();
-    // Tail
-    ctx.beginPath();
-    ctx.rect(beaverX+20, beaverY+3, beaverWidth-6, beaverHeight-5);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-    // Head
-    ctx.beginPath();
-    ctx.rect(beaverX-10, beaverY+3, beaverWidth-6, beaverHeight-5);
-    ctx.fillStyle = "brown";
-    ctx.fill();
-    ctx.closePath();
-    // Nose
-    ctx.beginPath();
-    ctx.rect(beaverX-13, beaverY+8, beaverWidth-15, beaverHeight-15);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-}
-
 
 function keyDownHandler(e) {
     if(e.keyCode === 37) {
@@ -437,32 +469,23 @@ function keyUpHandler(e) {
     }
 }
 
-let setBeaverRotation = drawBeaverLeft;
+let babies = [];
 
-let babyOne = new Baby(canvas.width - 10, 50);
-let babyTwo = new Baby(canvas.width - 10, 50);
-let babyThree = new Baby(canvas.width - 10, 50);
-let babyFour = new Baby(canvas.width - 10, 50);
-let babyFive = new Baby(canvas.width - 10, 50);
-let babySix = new Baby(canvas.width - 10, 50);
-let babySeven = new Baby(canvas.width - 10, 50);
-let babyEight = new Baby(canvas.width - 10, 50);
-let babyNine = new Baby(canvas.width - 10, 50);
-let babyTen = new Baby(canvas.width - 10, 50);
+for (let i = 0; i < 20; i++) {
+    babies.push(new Baby(canvas.width - 10, 50));
+}
 
-let babies = [babyOne, babyTwo, babyThree, babyFour, babyFive, babySix, babySeven, babyEight, babyNine, babyTen];
-let fires = []
-let fire = new Fire(50, canvas.height - 50)
-
-let fireInterval = setInterval(() => {
-    let newFire = new Fire(Math.floor(Math.random() * (canvas.width - 50)), Math.floor(Math.random() * (canvas.height - 50)));
-    fires.push(newFire);
-}, 10000);
-
-fires.push(fire);
+let fires = [new Fire(50, canvas.height - 50)]
 
 let score = new Score();
+let beaver = new Beaver();
+
+let counter = 0;
+let fireInterval = 1500;
+
 function draw() {
+    counter += 1;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
 
@@ -473,20 +496,20 @@ function draw() {
         fires[j].update();
     }
     
-    
-    setBeaverRotation();
+    beaver.update();
+
     for (let j = 0; j < babies.length; j++) {
         babies[j].update()
     }
 
     if (rightPressed) {
-        beaverX += 2;
-        setBeaverRotation = drawBeaverRight;
-        if (beaverX + beaverWidth > canvas.width) {
-            beaverX = canvas.width - beaverWidth;
+        beaver.setX(2);
+        beaver.setBeaverRoatation('right');
+        if (beaver.getX() + beaver.getWidth() > canvas.width) {
+            beaver.setX(canvas.width - beaver.getWidth());
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverX + 20 >= babies[i].x && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+            if (beaver.getX() + 20 >= babies[i].x && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].x + 10 >= babies[j].x && (babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10))) {
@@ -501,13 +524,13 @@ function draw() {
         }
     }
     else if (leftPressed) {
-        setBeaverRotation = drawBeaverLeft;
-        beaverX -= 2;
-        if (beaverX < 0) {
-            beaverX = 0;
+        beaver.setBeaverRoatation('left');
+        beaver.setX(-2);
+        if (beaver.getX() < 0) {
+            beaver.setX(0);
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverX - 20 <= babies[i].x && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+            if (beaver.getX() - 20 <= babies[i].x && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].x - 10 <= babies[j].x && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
@@ -522,13 +545,13 @@ function draw() {
         }
 
     } else if (upPressed) {
-        setBeaverRotation = drawBeaverUp;
-        beaverY -= 2;
-        if (beaverY < 0) {
-            beaverY = 0;
+        beaver.setBeaverRoatation('up');
+        beaver.setY(-2);
+        if (beaver.getY() < 0) {
+            beaver.setY(0);
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverY - 20 <= babies[i].y && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+            if (beaver.getY() - 20 <= babies[i].y && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].y - 10 <= babies[j].y && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
@@ -543,13 +566,13 @@ function draw() {
         }
         
     } else if (downPressed) {
-        setBeaverRotation = drawBeaverDown;
-        beaverY += 2;
-        if (beaverY > canvas.height - beaverHeight) {
-            beaverY = canvas.height - beaverHeight;
+        beaver.setBeaverRoatation('down');
+        beaver.setY(2);
+        if (beaver.getY() + beaver.getHeight() > canvas.height) {
+            beaver.setY(canvas.height);
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaverY + 20 >= babies[i].y && (beaverY <= babies[i].y + 20 && beaverY >= babies[i].y  - 20 && beaverX <= babies[i].x + 20 && beaverX >= babies[i].x  - 20)) {
+            if (beaver.getY() + 20 >= babies[i].y && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     babies[j].interrupt();
@@ -574,6 +597,14 @@ function draw() {
             }
         }
     }
+
+    if (counter === fireInterval) {
+        let newFire = new Fire(Math.floor(Math.random() * (canvas.width - 50)), Math.floor(Math.random() * (canvas.height - 50)));
+        fires.push(newFire);
+        fireInterval += 1500;
+    }
+
+    document.getElementById("counter").innerText = counter;
 }
 
 
@@ -588,6 +619,7 @@ let scoreInterval = setInterval(() => {
         }
     } 
 }, 1000)
+
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
