@@ -237,6 +237,17 @@ class Beaver {
     getBeaverSpeed() {
         return this.beaverSpeed;
     }
+
+    collision(object) {
+
+        if (this.getX() <= object.getX() + this.beaverWidth &&
+            this.getX() >= object.getX() - this.beaverWidth &&
+            this.getY() <= object.getY() + this.beaverHeight &&
+            this.getY() >= object.getY() - this.beaverHeight) {
+                return true;
+            }
+        return false
+     }
 }
 
 class Baby {
@@ -248,6 +259,22 @@ class Baby {
         this.direction = 'left'
     }
 
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
+    }
+
+    setX(value) {
+        this.x += value;
+    }
+
+    setY(value) {
+        this.y += value;
+    }
+  
     drawBaby() {
         if (this.direction === 'down') {
             ctx.save();
@@ -513,7 +540,6 @@ for (let i = 0; i < 20; i++) {
 }
 
 let fires = [new Fire(50, canvas.height - 50)]
-
 let background = new Background();
 let score = new Score();
 let beaver = new Beaver();
@@ -566,7 +592,7 @@ function draw() {
             beaver.setX(-beaver.getWidth());
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaver.getX() + 20 >= babies[i].x && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
+            if (beaver.getX() + 20 >= babies[i].getX() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].x + 10 >= babies[j].x && (babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10))) {
@@ -587,7 +613,7 @@ function draw() {
             beaver.setX(20);
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaver.getX() - 20 <= babies[i].x && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
+            if (beaver.getX() - 20 <= babies[i].getX() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].x - 10 <= babies[j].x && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
@@ -608,7 +634,7 @@ function draw() {
             beaver.setY(20);
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaver.getY() - 20 <= babies[i].y && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
+            if (beaver.getY() - 20 <= babies[i].getY() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     if (babies[i] != babies[j] && (babies[i].y - 10 <= babies[j].y && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
@@ -629,7 +655,7 @@ function draw() {
             beaver.setY(-20);
         }
         for (let i = 0; i < babies.length; i++) {
-            if (beaver.getY() + 20 >= babies[i].y && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
+            if (beaver.getY() + 20 >= babies[i].getY() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     babies[j].interrupt();
