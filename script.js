@@ -89,11 +89,11 @@ class Fire extends Hazard {
 }
 
 class Beaver {
-    constructor() {
-        this.beaverHeight = 20;
-        this.beaverWidth = 20;
-        this.beaverX = (canvas.width/2-this.beaverWidth);
-        this.beaverY = (canvas.height/2-this.beaverHeight);
+    constructor(width, height, x, y) {
+        this.beaverHeight = width;
+        this.beaverWidth = height;
+        this.beaverX = x;
+        this.beaverY = y;
         this.direction = 'left'
         this.beaverSpeed = 3;
     }
@@ -218,11 +218,11 @@ class Beaver {
         this.beaverY += value;
     }
 
-    getX( value ) {
+    getX() {
         return this.beaverX;
     }
 
-    getY( value) {
+    getY() {
         return this.beaverY;
     }
 
@@ -251,12 +251,14 @@ class Beaver {
 }
 
 class Baby {
-    constructor(dx, dy) {
-        this.x = dx;
-        this.y = dy;
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
         this.nextX = null;
         this.nextY = null;
         this.direction = 'left'
+        this.width = 15;
+        this.height = 15;
     }
 
     getX() {
@@ -433,6 +435,16 @@ class Baby {
         this.nextY = null;
     }
 
+    collision(object) {
+        if (this.getX() <= object.getX() + this.width &&
+            this.getX() >= object.getX() - this.width &&
+            this.getY() <= object.getY() + this.height &&
+            this.getY() >= object.getY() - this.height) {
+                return true;
+            }
+        return false
+    }
+
     update() {
         this.drawBaby()
     }
@@ -542,7 +554,7 @@ for (let i = 0; i < 20; i++) {
 let fires = [new Fire(50, canvas.height - 50)]
 let background = new Background();
 let score = new Score();
-let beaver = new Beaver();
+let beaver = new Beaver(20, 20, canvas.width/2, canvas.height/2);
 let control = new Controls();
 
 function keyDownHandler(e) { 
@@ -595,12 +607,12 @@ function draw() {
             if (beaver.getX() + 20 >= babies[i].getX() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
-                    if (babies[i] != babies[j] && (babies[i].x + 10 >= babies[j].x && (babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10))) {
+                    if (babies[i] != babies[j] && babies[i].collision(babies[j])) {
                         babies[j].interrupt();
-                        babies[i].x += 1;
-                        babies[j].x = babies[i].x + 2;
+                        babies[i].setX(1);
+                        babies[j].setX(2);
                     } else {
-                        babies[i].x += 1;
+                        babies[i].setX(1);
                     }
                 }
             }
@@ -616,12 +628,12 @@ function draw() {
             if (beaver.getX() - 20 <= babies[i].getX() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
-                    if (babies[i] != babies[j] && (babies[i].x - 10 <= babies[j].x && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
+                    if (babies[i] != babies[j] && babies[i].collision(babies[j])) {
                         babies[j].interrupt();
-                        babies[i].x -= 1;
-                        babies[j].x = babies[i].x - 2;
+                        babies[i].setX(-1);
+                        babies[j].setX(-2);
                     } else {
-                        babies[i].x -= 1;
+                        babies[i].setX(-1);
                     }
                 }
             }
@@ -637,12 +649,12 @@ function draw() {
             if (beaver.getY() - 20 <= babies[i].getY() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
-                    if (babies[i] != babies[j] && (babies[i].y - 10 <= babies[j].y && ( babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
+                    if (babies[i] != babies[j] && babies[i].collision(babies[j])) {
                         babies[j].interrupt();
-                        babies[i].y -= 1;
-                        babies[j].y = babies[i].y - 2;
+                        babies[i].setY(-1);
+                        babies[j].setY(-2);
                     } else {
-                        babies[i].y -= 1;
+                        babies[i].setY(-1);
                     }
                 }
             }
@@ -659,11 +671,11 @@ function draw() {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
                     babies[j].interrupt();
-                    if (babies[i] != babies[j] && (babies[i].x + 10 >= babies[j].x && (babies[i].y <= babies[j].y + 10 && babies[i].y >= babies[j].y  - 10 && babies[i].x <= babies[j].x + 10 && babies[i].x >= babies[j].x - 10))) {
-                        babies[i].y += 1;
-                        babies[j].y = babies[i].x + 2;
+                    if (babies[i] != babies[j] && babies[i].collision(babies[j])) {
+                        babies[i].setY(1);
+                        babies[j].setY(2);
                     } else {
-                        babies[i].y += 1;
+                        babies[i].setY(1);
                     }
                 }
             }
