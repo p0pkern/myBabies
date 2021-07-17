@@ -2,15 +2,6 @@
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
-// Background
-function drawBackground() {
-    ctx.beginPath();
-    ctx.fillStyle = "rgb(162, 179, 159)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.closePath();
-}
-
-
 class Score {
     constructor() {
         this.score = 0;
@@ -50,25 +41,201 @@ class Fire extends Hazard {
         super(dx, dy);
         this.width = 30;
         this.height = 30;
-        this.cycle = true;
+        this.fireInterval = 1500;
+        this.fireCounter = 0;
     }
 
     drawFire() {
-        if (this.cycle === true) {
-            ctx.save();
+        ctx.save();
 
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 50, 0, 2* Math.PI);
-            ctx.fillStyle = 'orangered';
-            ctx.fill();
-            ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 50, 0, 2* Math.PI);
+        ctx.fillStyle = 'orangered';
+        ctx.fill();
+        ctx.closePath();
 
-            ctx.restore();
+        ctx.restore();
+    }
+
+    getFireInterval() {
+        return this.fireInterval;
+    }
+
+    getFireCounter() {
+        return this.fireCounter;
+    }
+
+    increaseFireCounter() {
+        this.fireCounter += 1
+    }
+
+    resetFireCounter() {
+        this.fireCounter = 0;
+    }
+
+    releaseFire() {
+        if (this.fireCounter !== this.fireInterval) {
+            this.increaseFireCounter();
+            return false;
         }
+        
+        this.resetFireCounter();
+        return true;
     }
 
     update() {
         this.drawFire();
+    }
+}
+
+class Beaver {
+    constructor() {
+        this.beaverHeight = 20;
+        this.beaverWidth = 20;
+        this.beaverX = (canvas.width/2-this.beaverWidth);
+        this.beaverY = (canvas.height/2-this.beaverHeight);
+        this.direction = 'left'
+        this.beaverSpeed = 3;
+    }
+
+    drawBeaver() {
+        if (this.direction === 'up') {
+            // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY+20, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY-10, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX+7, this.beaverY-12, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        } else if (this.direction === 'right') {
+            // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX-13, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX+18, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX+30, this.beaverY+7, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        } else if (this.direction === 'down') {
+             // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY-15, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX+3, this.beaverY+15, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX+7, this.beaverY+28, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        } else if (this.direction === 'left') {
+            // Body
+            ctx.beginPath();
+            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Tail
+            ctx.beginPath();
+            ctx.rect(this.beaverX+20, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+            // Head
+            ctx.beginPath();
+            ctx.rect(this.beaverX-10, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
+            ctx.fillStyle = "brown";
+            ctx.fill();
+            ctx.closePath();
+            // Nose
+            ctx.beginPath();
+            ctx.rect(this.beaverX-13, this.beaverY+8, this.beaverWidth-15, this.beaverHeight-15);
+            ctx.fillStyle = "black";
+            ctx.fill();
+            ctx.closePath();
+        }
+    } 
+
+    setBeaverRotation( rotation ) {
+        this.direction = rotation;
+    }
+
+    update() {
+        this.drawBeaver();
+    }
+
+    setX( value ) {
+        this.beaverX += value;
+    }
+
+    setY( value ) {
+        this.beaverY += value;
+    }
+
+    getX( value ) {
+        return this.beaverX;
+    }
+
+    getY( value) {
+        return this.beaverY;
+    }
+
+    getWidth() {
+        return this.beaverWidth;
+    }
+
+    getHeight() {
+        return this.beaverHeight;
+    }
+
+    getBeaverSpeed() {
+        return this.beaverSpeed;
     }
 }
 
@@ -245,228 +412,98 @@ class Baby {
 
 }
 
-
-
-// River
-function drawRiver() {
-    ctx.beginPath();
-    ctx.rect(0, 200, canvas.width, 60)
-    ctx.fillStyle = "rgb(153, 218, 240)";
-    ctx.fill();
-    ctx.closePath();
-}
-
-// Food wood pile
-function drawFood() {
-    ctx.beginPath();
-    ctx.arc()
-}
-
-
-// Nest
-let nestWidth = 60;
-let nestHeight = 60;
-let nestX = (canvas.width - nestWidth - 60);
-let nestY = (canvas.height - nestHeight - 400);
-
-function drawNest() {
-    // Nest base
-    ctx.beginPath();
-    ctx.arc(nestX + 30, nestY + 30, 50, 0, 2 * Math.PI);
-    ctx.fillStyle = "rgb(163, 149, 140)"
-    ctx.fill();
-    ctx.closePath();
-
-    // Nest box
-    ctx.beginPath();
-    ctx.rect(nestX, nestY, nestWidth, nestHeight);
-    ctx.fillStyle = "rgb(219, 175, 132)";
-    ctx.fill();
-    ctx.closePath();
-
-    // Nest entrance
-    ctx.beginPath();
-    ctx.rect(nestX + 20, nestY + 40, 20, 20);
-    ctx.fillStyle = "black";
-    ctx.fill();
-    ctx.closePath();
-
-}
-
-class Beaver {
+class Background {
     constructor() {
-        this.beaverHeight = 20;
-        this.beaverWidth = 20;
-        this.beaverX = (canvas.width/2-this.beaverWidth);
-        this.beaverY = (canvas.height/2-this.beaverHeight);
-        this.direction = 'left'
+        this.nestX = (canvas.width - 120);
+        this.nestY = (canvas.height - 460);
     }
 
-    drawBeaver() {
-        if (this.direction === 'up') {
-            // Body
-            ctx.beginPath();
-            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Tail
-            ctx.beginPath();
-            ctx.rect(this.beaverX+3, this.beaverY+20, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-            // Head
-            ctx.beginPath();
-            ctx.rect(this.beaverX+3, this.beaverY-10, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Nose
-            ctx.beginPath();
-            ctx.rect(this.beaverX+7, this.beaverY-12, this.beaverWidth-15, this.beaverHeight-15);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-        } else if (this.direction === 'right') {
-            // Body
-            ctx.beginPath();
-            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Tail
-            ctx.beginPath();
-            ctx.rect(this.beaverX-13, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-            // Head
-            ctx.beginPath();
-            ctx.rect(this.beaverX+18, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Nose
-            ctx.beginPath();
-            ctx.rect(this.beaverX+30, this.beaverY+7, this.beaverWidth-15, this.beaverHeight-15);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-        } else if (this.direction === 'down') {
-             // Body
-            ctx.beginPath();
-            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Tail
-            ctx.beginPath();
-            ctx.rect(this.beaverX+3, this.beaverY-15, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-            // Head
-            ctx.beginPath();
-            ctx.rect(this.beaverX+3, this.beaverY+15, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Nose
-            ctx.beginPath();
-            ctx.rect(this.beaverX+7, this.beaverY+28, this.beaverWidth-15, this.beaverHeight-15);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-        } else if (this.direction === 'left') {
-            // Body
-            ctx.beginPath();
-            ctx.rect(this.beaverX, this.beaverY, this.beaverWidth, this.beaverHeight);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Tail
-            ctx.beginPath();
-            ctx.rect(this.beaverX+20, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-            // Head
-            ctx.beginPath();
-            ctx.rect(this.beaverX-10, this.beaverY+3, this.beaverWidth-6, this.beaverHeight-5);
-            ctx.fillStyle = "brown";
-            ctx.fill();
-            ctx.closePath();
-            // Nose
-            ctx.beginPath();
-            ctx.rect(this.beaverX-13, this.beaverY+8, this.beaverWidth-15, this.beaverHeight-15);
-            ctx.fillStyle = "black";
-            ctx.fill();
-            ctx.closePath();
-        }
-    } 
+    drawRiver() {
+        ctx.beginPath();
+        ctx.rect(0, 200, canvas.width, 60)
+        ctx.fillStyle = "rgb(153, 218, 240)";
+        ctx.fill();
+        ctx.closePath();
+    }
 
-    setBeaverRoatation( rotation ) {
-        this.direction = rotation;
+    drawBackground() {
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(162, 179, 159)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.closePath();
+    }
+
+    drawNest() {
+        // Nest base
+        ctx.beginPath();
+        ctx.arc(this.nestX + 30, this.nestY + 30, 50, 0, 2 * Math.PI);
+        ctx.fillStyle = "rgb(163, 149, 140)"
+        ctx.fill();
+        ctx.closePath();
+    
+        // Nest box
+        ctx.beginPath();
+        ctx.rect(this.nestX, this.nestY, 60, 60);
+        ctx.fillStyle = "rgb(219, 175, 132)";
+        ctx.fill();
+        ctx.closePath();
+    
+        // Nest entrance
+        ctx.beginPath();
+        ctx.rect(this.nestX + 20, this.nestY + 40, 20, 20);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.closePath();
+    
     }
 
     update() {
-        this.drawBeaver();
-    }
-
-    setX( value ) {
-        this.beaverX += value;
-    }
-
-    setY( value ) {
-        this.beaverY += value;
-    }
-
-    getX( value ) {
-        return this.beaverX;
-    }
-
-    getY( value) {
-        return this.beaverY;
-    }
-
-    getWidth() {
-        return this.beaverWidth;
-    }
-
-    getHeight() {
-        return this.beaverHeight;
+        this.drawBackground();
+        this.drawNest();
+        this.drawRiver();
     }
 }
 
-// Beaver Settings/Movements
-let rightPressed = false;
-let leftPressed = false;
-let upPressed = false;
-let downPressed = false;
-
-function keyDownHandler(e) {
-    if(e.keyCode === 37) {
-        leftPressed = true;
-    } else if (e.keyCode === 38) {
-        upPressed = true;
-    } else if (e.keyCode === 39 ) {
-        rightPressed = true;
-    } else if (e.keyCode === 40) {
-        downPressed = true;
+class Controls {
+    constructor() {
+        this.rightPressed = false;
+        this.leftPressed = false;
+        this.upPressed = false;
+        this.downPressed = false;
     }
-}
 
-function keyUpHandler(e) {
-    if(e.keyCode === 37) {
-        leftPressed = false;
-    } else if (e.keyCode === 38) {
-        upPressed = false;
-    } else if (e.keyCode === 39 ) {
-        rightPressed = false;
-    } else if (e.keyCode === 40) {
-        downPressed = false;
+    getRightPressed() {
+        return this.rightPressed;
     }
+
+    getLeftPressed() {
+        return this.leftPressed;
+    }
+
+    getUpPressed() {
+        return this.upPressed;
+    }
+
+    getDownPressed() {
+        return this.downPressed;
+    }
+
+    setRightPressed(boolean) {
+        this.rightPressed = boolean;
+    }
+
+    setLeftPressed(boolean) {
+        this.leftPressed = boolean;
+    }
+
+    setUpPressed(boolean) {
+        this.upPressed = boolean;
+    }
+
+    setDownPressed(boolean) {
+        this.downPressed = boolean;
+    }
+
 }
 
 let babies = [];
@@ -477,21 +514,41 @@ for (let i = 0; i < 20; i++) {
 
 let fires = [new Fire(50, canvas.height - 50)]
 
+let background = new Background();
 let score = new Score();
 let beaver = new Beaver();
+let control = new Controls();
 
-let counter = 0;
-let fireInterval = 1500;
+function keyDownHandler(e) { 
+    if(e.keyCode === 37) {
+        control.setLeftPressed(true);
+    } else if (e.keyCode === 38) {
+        control.setUpPressed(true);
+    } else if (e.keyCode === 39 ) {
+        control.setRightPressed(true);
+    } else if (e.keyCode === 40) {
+        control.setDownPressed(true);
+    }
+} 
+
+function keyUpHandler(e) {
+    if(e.keyCode === 37) {
+        control.setLeftPressed(false);
+    } else if (e.keyCode === 38) {
+        control.setUpPressed(false);
+    } else if (e.keyCode === 39 ) {
+        control.setRightPressed(false);
+    } else if (e.keyCode === 40) {
+        control.setDownPressed(false);
+    }
+}
 
 function draw() {
-    counter += 1;
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
 
-    drawBackground();
-    drawRiver();
-    drawNest();
+    background.update();
+
     for (let j = 0; j < fires.length; j++) {
         fires[j].update();
     }
@@ -502,11 +559,11 @@ function draw() {
         babies[j].update()
     }
 
-    if (rightPressed) {
-        beaver.setX(2);
-        beaver.setBeaverRoatation('right');
+    if (control.getRightPressed()) {
+        beaver.setX(beaver.getBeaverSpeed());
+        beaver.setBeaverRotation('right');
         if (beaver.getX() + beaver.getWidth() > canvas.width) {
-            beaver.setX(canvas.width - beaver.getWidth());
+            beaver.setX(-beaver.getWidth());
         }
         for (let i = 0; i < babies.length; i++) {
             if (beaver.getX() + 20 >= babies[i].x && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
@@ -523,11 +580,11 @@ function draw() {
             }
         }
     }
-    else if (leftPressed) {
-        beaver.setBeaverRoatation('left');
-        beaver.setX(-2);
+    else if (control.getLeftPressed()) {
+        beaver.setBeaverRotation('left');
+        beaver.setX(-beaver.getBeaverSpeed());
         if (beaver.getX() < 0) {
-            beaver.setX(0);
+            beaver.setX(20);
         }
         for (let i = 0; i < babies.length; i++) {
             if (beaver.getX() - 20 <= babies[i].x && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
@@ -544,11 +601,11 @@ function draw() {
             }
         }
 
-    } else if (upPressed) {
-        beaver.setBeaverRoatation('up');
-        beaver.setY(-2);
+    } else if (control.getUpPressed()) {
+        beaver.setBeaverRotation('up');
+        beaver.setY(-beaver.getBeaverSpeed());
         if (beaver.getY() < 0) {
-            beaver.setY(0);
+            beaver.setY(20);
         }
         for (let i = 0; i < babies.length; i++) {
             if (beaver.getY() - 20 <= babies[i].y && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
@@ -565,11 +622,11 @@ function draw() {
             }
         }
         
-    } else if (downPressed) {
-        beaver.setBeaverRoatation('down');
-        beaver.setY(2);
+    } else if (control.getDownPressed()) {
+        beaver.setBeaverRotation('down');
+        beaver.setY(beaver.getBeaverSpeed());
         if (beaver.getY() + beaver.getHeight() > canvas.height) {
-            beaver.setY(canvas.height);
+            beaver.setY(-20);
         }
         for (let i = 0; i < babies.length; i++) {
             if (beaver.getY() + 20 >= babies[i].y && (beaver.getY() <= babies[i].y + 20 && beaver.getY() >= babies[i].y  - 20 && beaver.getX() <= babies[i].x + 20 && beaver.getX() >= babies[i].x  - 20)) {
@@ -598,15 +655,12 @@ function draw() {
         }
     }
 
-    if (counter === fireInterval) {
-        let newFire = new Fire(Math.floor(Math.random() * (canvas.width - 50)), Math.floor(Math.random() * (canvas.height - 50)));
-        fires.push(newFire);
-        fireInterval += 1500;
+    if (fires[0].releaseFire()) { 
+        fires.push(new Fire(Math.floor(Math.random() * (canvas.width - 50)), Math.floor(Math.random() * (canvas.height - 50))));
     }
 
-    document.getElementById("counter").innerText = counter;
+    document.getElementById("counter").innerText = fires[0].getFireCounter();
 }
-
 
 let scoreInterval = setInterval(() => {
     score.update(100, babies.length)
@@ -618,8 +672,7 @@ let scoreInterval = setInterval(() => {
             clearInterval(fireInterval);
         }
     } 
-}, 1000)
-
+}, 1000);
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
