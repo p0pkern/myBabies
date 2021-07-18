@@ -1,6 +1,6 @@
 # My Babies
 
-Mother Beaver's babies are on the loose. Make sure to get them back in the shelter before they get hurt.
+There's fires breaking out and mother beaver's babies are in a panic. Stop them from running into the flames for as long as possible.
 
 ### Usage.
 - Use the arrow keys to move.
