@@ -20,25 +20,10 @@ class Score {
     }
 }
 
-class Hazard {
-    constructor(dx, dy) {
-        this.x = dx;
-        this.y = dy;
-        this.active = false;
-    }
-
-    activate() {
-        this.active = true;
-    }
-
-    deactivate() {
-        this.activate = false;
-    }
-}
-
-class Fire extends Hazard {
-    constructor(dx, dy) {
-        super(dx, dy);
+class Fire {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
         this.width = 30;
         this.height = 30;
         this.fireInterval = 1500;
@@ -81,6 +66,14 @@ class Fire extends Hazard {
         
         this.resetFireCounter();
         return true;
+    }
+
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
     }
 
     update() {
@@ -388,6 +381,7 @@ class Baby {
     wander() {
 
         if (this.nextX === null && this.nextY === null) {
+
             this.nextX = Math.floor(Math.random() * canvas.width - 15);
             this.nextY = Math.floor(Math.random() * canvas.height - 15);
 
@@ -587,22 +581,16 @@ function draw() {
 
     background.update();
 
-    for (let j = 0; j < fires.length; j++) {
-        fires[j].update();
-    }
+    for (let j = 0; j < fires.length; j++) fires[j].update();
     
     beaver.update();
 
-    for (let j = 0; j < babies.length; j++) {
-        babies[j].update()
-    }
+    for (let j = 0; j < babies.length; j++) babies[j].update()
 
     if (control.getRightPressed()) {
         beaver.setX(beaver.getBeaverSpeed());
         beaver.setBeaverRotation('right');
-        if (beaver.getX() + beaver.getWidth() > canvas.width) {
-            beaver.setX(-beaver.getWidth());
-        }
+        if (beaver.getX() + beaver.getWidth() > canvas.width) beaver.setX(-beaver.getWidth());
         for (let i = 0; i < babies.length; i++) {
             if (beaver.getX() + 20 >= babies[i].getX() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
@@ -617,8 +605,7 @@ function draw() {
                 }
             }
         }
-    }
-    else if (control.getLeftPressed()) {
+    } else if (control.getLeftPressed()) {
         beaver.setBeaverRotation('left');
         beaver.setX(-beaver.getBeaverSpeed());
         if (beaver.getX() < 0) {
@@ -670,8 +657,8 @@ function draw() {
             if (beaver.getY() + 20 >= babies[i].getY() && beaver.collision(babies[i])) {
                 babies[i].interrupt();
                 for (j = 0; j < babies.length; j++) {
-                    babies[j].interrupt();
                     if (babies[i] != babies[j] && babies[i].collision(babies[j])) {
+                        babies[j].interrupt();
                         babies[i].setY(1);
                         babies[j].setY(2);
                     } else {
@@ -684,7 +671,7 @@ function draw() {
 
     for (let k = 0; k < babies.length; k++) {
         for(f = 0; f < fires.length; f++) {
-            if (babies[k].x <= fires[f].x + 50 && babies[k].x >= fires[f].x - 50 && babies[k].y <= fires[f].y + 50 && babies[k].y >= fires[f].y - 50) {
+            if (babies[k].getX() <= fires[f].getX() + 50 && babies[k].getX() >= fires[f].getX() - 50 && babies[k].getY() <= fires[f].getY() + 50 && babies[k].getY() >= fires[f].getY() - 50) {
                 babies = babies.filter(item => item !== babies[k])
                 break;
             } else {
@@ -696,8 +683,6 @@ function draw() {
     if (fires[0].releaseFire()) { 
         fires.push(new Fire(Math.floor(Math.random() * (canvas.width - 50)), Math.floor(Math.random() * (canvas.height - 50))));
     }
-
-    document.getElementById("counter").innerText = fires[0].getFireCounter();
 }
 
 let scoreInterval = setInterval(() => {
